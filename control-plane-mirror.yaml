@@ -1,0 +1,14 @@
+---
+kind: KonnectGatewayControlPlane
+apiVersion: konnect.konghq.com/v1alpha2
+metadata:
+  name: ${CONTROL_PLANE_NAME}
+  namespace: kong
+spec:
+  source: Mirror
+  mirror:
+    konnect:
+      id: ${CONTROL_PLANE_ID}
+  konnect:
+    authRef:
+      name: ${CONTROL_PLANE_NAME}-api-auth

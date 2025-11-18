@@ -1,0 +1,12 @@
+---
+kind: KonnectGatewayControlPlane
+apiVersion: konnect.konghq.com/v1alpha2
+metadata:
+  name: ${CONTROL_PLANE_NAME}
+  namespace: kong
+spec:
+  createControlPlaneRequest:
+    name: ${CONTROL_PLANE_NAME}
+  konnect:
+    authRef:
+      name: ${CONTROL_PLANE_NAME}-api-auth

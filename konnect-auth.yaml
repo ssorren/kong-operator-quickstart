@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ${CONTROL_PLANE_NAME}-secret
+  namespace: kong
+  labels:
+    konghq.com/credential: konnect #important label
+    konghq.com/secret: "true" #important label
+stringData:
+  token: $PAT
+---
+kind: KonnectAPIAuthConfiguration
+apiVersion: konnect.konghq.com/v1alpha1
+metadata:
+  name: ${CONTROL_PLANE_NAME}-api-auth
+  namespace: kong
+spec:
+  type: secretRef
+  secretRef:
+    name: ${CONTROL_PLANE_NAME}-secret
+  serverURL: us.api.konghq.com

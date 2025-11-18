@@ -1,0 +1,94 @@
+---
+kind: KonnectExtension
+apiVersion: konnect.konghq.com/v1alpha2
+metadata:
+  name: ${CONTROL_PLANE_NAME}-extension
+  namespace: kong
+spec:
+  clientAuth:
+    certificateSecret:
+      provisioning: Automatic
+  konnect:
+    controlPlane:
+      ref:
+        type: konnectNamespacedRef
+        konnectNamespacedRef:
+          name: ${CONTROL_PLANE_NAME}
+---
+apiVersion: gateway-operator.konghq.com/v1beta1
+kind: DataPlane
+metadata:
+  name: ${CONTROL_PLANE_NAME}-dataplane
+  namespace: kong
+spec:
+  extensions:
+    - kind: KonnectExtension
+      name: ${CONTROL_PLANE_NAME}-extension
+      group: konnect.konghq.com
+  deployment:
+    # rollout:
+    #    strategy:
+    #      blueGreen:
+    #        promotion:
+    #          strategy: BreakBeforePromotion
+    # scaling:
+    #   horizontal:
+    #     minReplicas: 1
+    #     maxReplicas: 10
+    #     metrics:
+    #       - type: Resource
+    #         resource:
+    #           name: cpu
+    #           target:
+    #             type: Utilization
+    #             averageUtilization: 50
+    podTemplateSpec:
+      spec:
+        # volumes:
+        #   - name: tls-volume
+        #     secret:
+        #       secretName: kong-tls-secret
+        containers:
+          - name: proxy
+            image: sal1103/xslt:3.12.1
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: "500m"
+                memory: "1Gi"
+              limits:
+                cpu: "1000m"
+                memory: "2Gi"
+            # volumeMounts:
+            #   - name: tls-volume
+            #     mountPath: /etc/kong/tls
+            #     readOnly: true
+            env:
+              # - name: KONG_SSL_CERT
+              #   value: "/etc/kong/tls/tls.crt"
+              # - name: KONG_SSL_CERT_KEY
+              #   value: "/etc/kong/tls/tls.key"
+              - name: KONG_NGINX_HTTP_CLIENT_BODY_BUFFER_SIZE
+                value: "50m" # Example: Set to 50MB
+              - name: KONG_NGINX_HTTP_CLIENT_MAX_BODY_SIZE
+                value: "50m" # Example: Set to 50MB
+              - name: KONG_LOG_LEVEL
+                value: debug
+              - name: KONG_PLUGINS
+                value: "bundled,xslt-transformer"
+  network:
+    services:
+      ingress:
+        name: ${CONTROL_PLANE_NAME}-loadbalancer
+        type: LoadBalancer
+        ports:
+          - name: http
+            port: ${LB_HTTP_PORT}
+            targetPort: 8000
+          - name: https
+            port: ${LB_HTTPS_PORT}
+            targetPort: 8443
+        #  annotations:
+        #    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+        #    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+        #    "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
