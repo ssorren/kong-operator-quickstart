@@ -16,10 +16,12 @@ The examples here use commonly available command line tools such as:
 - kubectl
 - helm
 - envsubst
+- jq
 - k9s (optional but a very good utility)
 
 Please ensure these are installed via `homebrew` for Mac, or whatever package manager is appropriate for the operating system you will be using. Beyond this, we're assuming you have the following:
 
+- You have cloned this repo to the workstation you will the executing CLI commands from.
 - A Kubernetes cluster running.
 - Access to the cluster via `kubectl`
 - Access to your [Konnect Organization](https://cloud.konghq.com/) (trial or paid)
@@ -94,6 +96,12 @@ We have two options here. If we're creating a control plane from scratch, we can
 cat control-plane.yaml | envsubst | kubectl apply -f -
 ```
 
+You should now see your newly created control plane in the [Konnect UI](https://cloud.konghq.com/us/gateway-manager/):
+![Control Plane](/assets/controlplane.png "Control Plane Created")
+
+
+### Control Plane Mirror Option
+
 If we want to mirror a pre-existing control plane, we will use the contol-plane-morror.yaml file. However, we will need to get the control plane id for this approach to work. You can get this from the Konnect UI, but there is a CLI command which will owrk as well:
 
 ```shell
@@ -107,8 +115,15 @@ In your terminal, you should see a UUID string from the above command if success
 cat control-plane-mirror.yaml | envsubst | kubectl apply -f -
 ```
 
+
+
+
 ### Deploy the Data Plane
 Finally, out DataPlane resource is ready to deploy with the following command:
 ```shell
 cat data-plane.yaml | envsubst | kubectl apply -f -
 ```
+
+Your data plane pod should now be strting up. You can check on the status via k9s, or using kubectl directly. If you check your Konnect UI, you should be able to see it in the *Data Plane Nodes* section:
+
+![Data Plane](/assets/dataplane.png "Data Plane Connected")
