@@ -1,7 +1,7 @@
 # Kong Operator Quickstart
  To deploy Kong Gateway and or Kong AI Gateway via Kubernetes, we will need to set up the following entities:
 
-- The Kong Operator itself.
+- The [Kong Operator](https://developer.konghq.com/operator/) itself.
 - A Kubernetes Secret which contains konnect a access token (either a personal access token or a system access token).
 - A KonnectAPIAuthConfiguration resource. This entity instructs the operator to use the defined secret when making calls to the Konnect APIs.
 - A KonnectGatewayControlPlane resource. This is the Konnect Control Plane. It can be fully managed by Kubernetes, or it can be a mirror of a pre-existing control plane (created manually in the UI or through terraform, kongctl, API calls etc.). You may also want to use mirrored control planes if you want to run data planes on multiple clusters for the same control plane, in which case you would need to avoid conflicts in control plane ownership.
