@@ -99,8 +99,8 @@ cat konnect-auth.yaml | envsubst | kubectl apply -f -
 
 A `kubectl get KonnectAPIAuthConfiguration ${CONTROL_PLANE_NAME}-api-auth -n kong` should yield something like this:
 ```shell
-NAME               VALID   ORGID                                  SERVERURL
-xslt-cp-api-auth   True    d67f85bd-6355-4003-8de3-fc2a3c76bead   https://us.api.konghq.com
+NAME                     VALID   ORGID                                  SERVERURL
+ko-quickstart-api-auth   True    d67f85bd-6355-4003-8de3-fc2a3c76bead   https://us.api.konghq.com
 ```
 
 ### Step 5a) Deploy the Control Plane
