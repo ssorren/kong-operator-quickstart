@@ -19,4 +19,4 @@ spec:
   type: secretRef
   secretRef:
     name: ${CONTROL_PLANE_NAME}-secret
-  serverURL: us.api.konghq.com
+  serverURL: ${KONNECT_API_ENDPOINT}

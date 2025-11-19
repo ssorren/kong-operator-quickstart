@@ -75,6 +75,7 @@ Obtain a Konnect [personal access token](https://cloud.konghq.com/global/account
 ```shell
 export CONTROL_PLANE_NAME=ko-quickstart
 export KONG_GATEWAY_IMAGE="kong/kong-gateway:3.12"
+export KONNECT_API_ENDPOINT=us.api.konghq.com # if you are not using the US region, replace with the appropriate endpoint
 export LB_HTTP_PORT=8080
 export LB_HTTPS_PORT=8443
 export PAT=<your token>
@@ -119,7 +120,7 @@ You should now see your newly created control plane in the [Konnect UI](https://
 If we want to mirror a pre-existing control plane, we will use the contol-plane-morror.yaml file. However, we will need to get the control plane id for this approach to work. You can get this from the Konnect UI, but there is a CLI command which will owrk as well:
 
 ```shell
-export CONTROL_PLANE_ID=$(curl -s -X GET "https://us.api.konghq.com/v2/control-planes?filter\[name\]=${CONTROL_PLANE_NAME}" -H "Authorization: Bearer ${PAT}" | jq -r '.data[0].id' )
+export CONTROL_PLANE_ID=$(curl -s -X GET "https://${KONNECT_API_ENDPOINT}$/v2/control-planes?filter\[name\]=${CONTROL_PLANE_NAME}" -H "Authorization: Bearer ${PAT}" | jq -r '.data[0].id' )
 echo $CONTROL_PLANE_ID
 ```
 
