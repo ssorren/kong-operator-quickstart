@@ -1,17 +1,17 @@
 # Kong Operator Quickstart
  To deploy Kong Gateway and or Kong AI Gateway via Kubernetes, we will need to set up the following entities:
 
-1. The Kong Operator itself.
-2. A Kubernetes Secret which contains konnect a access token (either a personal access token or a system access token).
-3. A KonnectAPIAuthConfiguration resource. This entity instructs the operator to use the defined secret when making calls to the Konnect APIs.
-4. A KonnectGatewayControlPlane resource. This is the Konnect Control Plane. It can be fully managed by Kubernetes, or it can be a mirror of a pre-existing control plane (created manually in the UI or through terraform, kongctl, API calls etc.). You may also want to use mirrored control planes if you want to run data planes on multiple clusters for the same control plane, in which case you would need to avoid conflicts in control plane ownership.
-5. A KonnectExtension resource. This will link DataPlane resources to a KonnectGatewayControlPlane. It also controls certificate generation for data plane to control plane mTLS communication.
-6. A DataPlane resource. This is the reource that actually serves traffic on your cluster. This resource will also manage LoadBalancer instantiation, TLS certs etc.
+- The Kong Operator itself.
+- A Kubernetes Secret which contains konnect a access token (either a personal access token or a system access token).
+- A KonnectAPIAuthConfiguration resource. This entity instructs the operator to use the defined secret when making calls to the Konnect APIs.
+- A KonnectGatewayControlPlane resource. This is the Konnect Control Plane. It can be fully managed by Kubernetes, or it can be a mirror of a pre-existing control plane (created manually in the UI or through terraform, kongctl, API calls etc.). You may also want to use mirrored control planes if you want to run data planes on multiple clusters for the same control plane, in which case you would need to avoid conflicts in control plane ownership.
+- A KonnectExtension resource. This will link DataPlane resources to a KonnectGatewayControlPlane. It also controls certificate generation for data plane to control plane mTLS communication.
+- A DataPlane resource. This is the reource that actually serves traffic on your cluster. This resource will also manage LoadBalancer instantiation, TLS certs etc.
 
 In the steps below, some of these entities will be combined into files together, but it is important to understand each entitiy and waht it is reponsible for.
 
 
-### Pre-reqs
+### Step 0) Pre-reqs
 The examples here use commonly available command line tools such as:
 - kubectl
 - helm
@@ -37,7 +37,7 @@ kubectl apply -f metal-lb.yaml
 ```
 
 
-### Install Kong Operator
+### Step 1) Install Kong Operator
 
 First install the Kong helm charts with the following commands:
 ```shell
@@ -57,7 +57,7 @@ helm upgrade --install kong-operator kong/kong-operator -n kong-system \
 kubectl create namespace kong
 ```
 
-### Environment Variables
+### Step 2) Environment Variables
 The kubernetes manifests in this repo are designed to be used with environment variables. Since many of the reources reference each other, we are using a `$CONRTOL_PLANE_NAME` variable along with a naming convention to ensure the relationships are respected and there are no collisions when multiple gateways are defined. You may want to use your own naming convention in your dev/production environments, but the naming convention used here is a as follows:
 - **${CONTROL_PLANE_NAME}** = KonnectGatewayControlPlane
 - **${CONTROL_PLANE_NAME}-extension** = KonnectExtension
@@ -78,7 +78,7 @@ export PAT=<your token>
 ```
 
 ## Deployment
-### Ensure the kong-operator pod is up and running
+### Step 3) Ensure the kong-operator pod is up and running
 ```shell
 kubectl --namespace kong-system get pods
 ```
@@ -89,7 +89,7 @@ NAME                                                             READY   STATUS 
 kong-operator-kong-operator-controller-manager-c5db8cb56-2rwjt   1/1     Running   0          3d8h
 ```
 
-### Deploy the Secret and KonnectAPIAuthConfiguration
+### Step 4) Deploy the Secret and KonnectAPIAuthConfiguration
 ```shell
 cat konnect-auth.yaml | envsubst | kubectl apply -f -
 ```
@@ -100,7 +100,7 @@ NAME               VALID   ORGID                                  SERVERURL
 xslt-cp-api-auth   True    d67f85bd-6355-4003-8de3-fc2a3c76bead   https://us.api.konghq.com
 ```
 
-### Deploy the Control PLane
+### Step 5a) Deploy the Control PLane
 We have two options here. If we're creating a control plane from scratch, we can use the Kong Operator to manage it. If so, run the following command:
 
 ```shell
@@ -111,7 +111,7 @@ You should now see your newly created control plane in the [Konnect UI](https://
 ![Control Plane](/assets/controlplane.png "Control Plane Created")
 
 
-### Control Plane Mirror Option
+### Step 5b) Control Plane Mirror Option
 
 If we want to mirror a pre-existing control plane, we will use the contol-plane-morror.yaml file. However, we will need to get the control plane id for this approach to work. You can get this from the Konnect UI, but there is a CLI command which will owrk as well:
 
@@ -129,7 +129,7 @@ cat control-plane-mirror.yaml | envsubst | kubectl apply -f -
 
 
 
-### Deploy the Data Plane
+### Step 6) Deploy the Data Plane
 Please inspect your local copy of [data-plane.yaml](data-plane.yaml). There are commented sections which you may want to implement. For example, if you are running on EKS, you may want to customize the load balancer annotations. The default for Kong is an external L4 load balancer.
 
 Finally, out DataPlane resource is ready to deploy with the following command:
