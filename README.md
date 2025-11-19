@@ -102,7 +102,7 @@ NAME               VALID   ORGID                                  SERVERURL
 xslt-cp-api-auth   True    d67f85bd-6355-4003-8de3-fc2a3c76bead   https://us.api.konghq.com
 ```
 
-### Step 5a) Deploy the Control PLane
+### Step 5a) Deploy the Control Plane
 We have two options here. If we're creating a control plane from scratch, we can use the Kong Operator to manage it. If so, run the following command:
 
 ```shell
