@@ -68,7 +68,7 @@ The kubernetes manifests in this repo are designed to be used with environment v
 | **${CONTROL_PLANE_NAME}-secret**       | Secret containing your access token |
 | **${CONTROL_PLANE_NAME}-api-auth**     | KonnectAPIAuthConfiguration         |
 
-Technically speaking, the *Secret* and *KonnectAPIAuthConfiguration* resources can be used for several control planes. Depending on your security requirements, you could re-use these resources by giving them a less specific names such as `konnect-token-secret` and `konnect-api-auth`. In this example, we are createing one of each per control plane. This helps limit blast radius if tokens expire or need to be invaliated for other reasons.
+Technically speaking, the *Secret* and *KonnectAPIAuthConfiguration* resources can be used for several control planes. Depending on your security requirements, you could re-use these resources by giving them a less specific names such as `konnect-token-secret` and `konnect-api-auth`. In this example, we are creating one of each per control plane. This helps limit blast radius if tokens expire or need to be invaliated for other reasons.
 
 Obtain a Konnect [personal access token](https://cloud.konghq.com/global/account/tokens) and store it as an environment variable in your shell session. For producion environments, you will likely want a [system access token](https://cloud.konghq.com/global/organization/system-accounts). For our control plane name, we are using `ko-quickstart`. Feel free to use whatever name you like. The ports listed are below are for the load balancer, use whatever ports are appropriate for your environment.
 
