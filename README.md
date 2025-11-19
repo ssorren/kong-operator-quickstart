@@ -25,6 +25,16 @@ Please ensure these are installed via `homebrew` for Mac, or whatever package ma
 - A Kubernetes cluster running.
 - Access to the cluster via `kubectl`
 - Access to your [Konnect Organization](https://cloud.konghq.com/) (trial or paid)
+- Your Kubernetes cluster nees to be able to create load balancers. This varies by provider. For example, EKS requires permissions to be set up on the cluster. If you are running on a local cluster and do not have load balancer installed, metal-lb is a good choice. To install on your local cluster, run the following:
+
+
+```shell
+## local clusters only!
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
+kubectl get pods -n metallb-system
+kubectl apply -f metal-lb.yaml
+```
+
 
 ### Install Kong Operator
 
@@ -119,6 +129,8 @@ cat control-plane-mirror.yaml | envsubst | kubectl apply -f -
 
 
 ### Deploy the Data Plane
+Please inspect your local copy of [data-plane.yaml](data-plane.yaml). There are commented sections which you may want to implement. For example, if you are running on EKS, you may want to customize the load balancer annotations. The default for Kong is an external L4 load balancer.
+
 Finally, out DataPlane resource is ready to deploy with the following command:
 ```shell
 cat data-plane.yaml | envsubst | kubectl apply -f -
@@ -127,3 +139,20 @@ cat data-plane.yaml | envsubst | kubectl apply -f -
 Your data plane pod should now be strting up. You can check on the status via k9s, or using kubectl directly. If you check your Konnect UI, you should be able to see it in the *Data Plane Nodes* section:
 
 ![Data Plane](/assets/dataplane.png "Data Plane Connected")
+
+You can test availability with curl, assuming your testing on localhost:
+
+```
+curl http://localhost:$LB_HTTP_PORT/
+```
+
+Should yield something like the following:
+
+```json
+{
+  "message":"no Route matched with those values",
+  "request_id":"2e1a1e2e29f94c14a5a4685371512908"
+}
+```
+
+You are now ready to configure your services, routes and plugins and begin serving traffic. 
