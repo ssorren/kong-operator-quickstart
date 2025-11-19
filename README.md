@@ -50,14 +50,14 @@ kubectl create namespace kong
 
 ### Step 2) Environment Variables
 The kubernetes manifests in this repo are designed to be used with environment variables. Since many of the reources reference each other, we are using a `$CONRTOL_PLANE_NAME` variable along with a naming convention to ensure the relationships are respected and there are no collisions when multiple gateways are defined. You may want to use your own naming convention in your dev/production environments, but the naming convention used here is as follows:
-| Var                                    | Resource                            |
-| :------------------------------------- | :---------------------------------- |
-| **${CONTROL_PLANE_NAME}**              | KonnectGatewayControlPlane          |
-| **${CONTROL_PLANE_NAME}-extension**    | KonnectExtension                    |
-| **${CONTROL_PLANE_NAME}-dataplane**    | DataPlane                           |
-| **${CONTROL_PLANE_NAME}-loadbalancer** | LoadBalancer for the DataPlane      |
-| **${CONTROL_PLANE_NAME}-secret**       | Secret containing your access token |
-| **${CONTROL_PLANE_NAME}-api-auth**     | KonnectAPIAuthConfiguration         |
+| Var                                    | Resource                            | File                                   |
+| :------------------------------------- | :---------------------------------- |:-------------------------------------- |
+| **${CONTROL_PLANE_NAME}**              | KonnectGatewayControlPlane          | [control-plane.yaml](control-plane.yaml), [control-plane-mirror.yaml](control-plane-mirror.yaml) |
+| **${CONTROL_PLANE_NAME}-extension**    | KonnectExtension                    | [data-plane.yaml](data-plane.yaml)     |
+| **${CONTROL_PLANE_NAME}-dataplane**    | DataPlane                           | [data-plane.yaml](data-plane.yaml)     |
+| **${CONTROL_PLANE_NAME}-loadbalancer** | LoadBalancer for the DataPlane      | [data-plane.yaml](data-plane.yaml)     |
+| **${CONTROL_PLANE_NAME}-secret**       | Secret containing your access token | [konnect-auth.yaml](konnect-auth.yaml) |
+| **${CONTROL_PLANE_NAME}-api-auth**     | KonnectAPIAuthConfiguration         | [konnect-auth.yaml](konnect-auth.yaml) |
 
 Technically speaking, the *Secret* and *KonnectAPIAuthConfiguration* resources can be used for several control planes. Depending on your security requirements, you could re-use these resources by giving them a less specific names such as `konnect-token-secret` and `konnect-api-auth`. In this example, we are creating one of each per control plane. This helps limit blast radius if tokens expire or need to be invaliated for other reasons.
 
