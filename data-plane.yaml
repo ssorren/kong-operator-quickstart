@@ -84,6 +84,7 @@ spec:
               ####### Optional Plugin Settings ########
               - name: KONG_PLUGINS
                 value: "bundled" # add custom plugins comma separated after "bundled," if any. Would require a custom image.
+                
   ### Optional LoadBalancer Service Settings ########
   # by default Kong should use pots 80 and 443 for HTTP and HTTPS respectively
   # on an L4 load balancer (think AWS NLB). If you need to customize ports or add annotations,
