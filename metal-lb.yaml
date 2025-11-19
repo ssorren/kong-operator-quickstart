@@ -1,3 +1,4 @@
+## for load balancers on local k8s clusters. Should not be needed on managed k8s services like EKS, GKE, AKS, etc.
 ---
 apiVersion: v1
 kind: ConfigMap
