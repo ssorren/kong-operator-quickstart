@@ -31,9 +31,8 @@ Please ensure these are installed via `homebrew` for Mac, or whatever package ma
 ```shell
 ## Only run if you are using a local K8s cluster 
 ## and you do not already have a load balancer like metal-lb installed
+## If you've been running a k8s cluster locally, you should propbable skip this
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
-kubectl get pods -n metallb-system
-kubectl apply -f metal-lb.yaml
 ```
 
 
