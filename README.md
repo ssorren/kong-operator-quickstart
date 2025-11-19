@@ -27,6 +27,7 @@ Please ensure these are installed via `homebrew` for Mac, or whatever package ma
 - Access to your [Konnect Organization](https://cloud.konghq.com/) (trial or paid)
 - Your Kubernetes cluster needs to be able to create load balancers. ***This varies by provider. For example, EKS requires permissions and a load balancer controller to be set up on the cluster. Please refer to your providers documentation.***
 
+
 ### Step 1) Install Kong Operator
 
 First install the Kong helm charts with the following commands:
@@ -110,7 +111,7 @@ You should now see your newly created control plane in the [Konnect UI](https://
 If we want to mirror a pre-existing control plane, we will use the contol-plane-morror.yaml file. However, we will need to get the control plane id for this approach to work. You can get this from the Konnect UI, but there is a CLI command which will owrk as well:
 
 ```shell
-export CONTROL_PLANE_ID=$(curl -s -X GET "https://${KONNECT_API_ENDPOINT}$/v2/control-planes?filter\[name\]=${CONTROL_PLANE_NAME}" -H "Authorization: Bearer ${PAT}" | jq -r '.data[0].id' )
+export CONTROL_PLANE_ID=$(curl -s -X GET "https://${KONNECT_API_ENDPOINT}/v2/control-planes?filter\[name\]=${CONTROL_PLANE_NAME}" -H "Authorization: Bearer ${PAT}" | jq -r '.data[0].id' )
 echo $CONTROL_PLANE_ID
 ```
 
