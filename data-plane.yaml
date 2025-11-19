@@ -53,7 +53,8 @@ spec:
         containers:
           - name: proxy
             image: ${KONG_GATEWAY_IMAGE}
-            imagePullPolicy: Always
+            ####### Optional Image Pull Settings ########
+            # imagePullPolicy: Always
             resources:
               requests:
                 cpu: "500m"
@@ -73,13 +74,16 @@ spec:
               # - name: KONG_SSL_CERT_KEY
               #   value: "/etc/kong/tls/tls.key"
 
+              ####### Optional Performance Settings ########
+              # KONG_NGINX_WORKER_PROCESSES: "4"
+              
               ####### Optional DEBUG Settings ########
               # - name: KONG_LOG_LEVEL
               #   value: debug
 
               ####### Optional Plugin Settings ########
               - name: KONG_PLUGINS
-                value: "bundled"
+                value: "bundled" # add custom plugins comma separated after "bundled," if any. Would require a custom image.
   network:
     services:
       ingress:
