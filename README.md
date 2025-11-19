@@ -74,6 +74,7 @@ Obtain a Konnect [personal access token](https://cloud.konghq.com/global/account
 
 ```shell
 export CONTROL_PLANE_NAME=ko-quickstart
+export KONG_GATEWAY_CONTAINER="kong/kong-gateway:3.12"
 export LB_HTTP_PORT=8080
 export LB_HTTPS_PORT=8443
 export PAT=<your token>
