@@ -52,7 +52,7 @@ spec:
         #       secretName: kong-tls-secret
         containers:
           - name: proxy
-            image: ${KONG_GATEWAY_CONTAINER}
+            image: ${KONG_GATEWAY_IMAGE}
             imagePullPolicy: Always
             resources:
               requests:
