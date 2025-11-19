@@ -25,8 +25,9 @@ Please ensure these are installed via `homebrew` for Mac, or whatever package ma
 - A Kubernetes cluster running.
 - Access to the cluster via `kubectl`
 - Access to your [Konnect Organization](https://cloud.konghq.com/) (trial or paid)
-- Your Kubernetes cluster nees to be able to create load balancers. This varies by provider. For example, EKS requires permissions to be set up on the cluster. If you are running on a local cluster and do not have load balancer installed, metal-lb is a good choice. To install on your local cluster, run the following:
+- Your Kubernetes cluster nees to be able to create load balancers. This varies by provider. For example, EKS requires permissions and a load balancer controller to be set up on the cluster. Please refer to your providers documentation.
 
+If you are running on a local cluster and do not have load balancer installed, metal-lb is a good choice. To install on your local cluster, run the following:
 
 ```shell
 ## local clusters only!
@@ -81,7 +82,7 @@ export PAT=<your token>
 ```shell
 kubectl --namespace kong-system get pods
 ```
-You should see output likw this:
+You should see output like this:
 ```shell
 ➜  kong-operator-quickstart git:(main) ✗ kubectl --namespace kong-system get pods
 NAME                                                             READY   STATUS    RESTARTS   AGE
