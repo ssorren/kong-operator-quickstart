@@ -151,4 +151,7 @@ Should yield something like the following:
 }
 ```
 
-You are now ready to configure your services, routes and plugins and begin serving traffic. 
+You are now ready to configure your services, routes and plugins and begin serving traffic.
+We've also provided 2 interactive shell scripts which automate this process:
+- **creategateway.sh** : Runs through the steps in this readme, prompting for values along the way.
+- **cleanup.sh** : Deletes the resources created for a given CONTOL_PLANE_NAME. It uses the naming convention used in our examples.
