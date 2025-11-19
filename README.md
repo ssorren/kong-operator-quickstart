@@ -94,7 +94,7 @@ kong-operator-kong-operator-controller-manager-c5db8cb56-2rwjt   1/1     Running
 
 ### Step 4) Deploy the Secret and KonnectAPIAuthConfiguration
 ```shell
-cat konnect-auth.yaml | envsubst | kubectl apply -f -
+envsubst < konnect-auth.yaml | kubectl apply -f -
 ```
 
 A `kubectl get KonnectAPIAuthConfiguration ${CONTROL_PLANE_NAME}-api-auth -n kong` should yield something like this:
@@ -107,7 +107,7 @@ ko-quickstart-api-auth   True    d67f85bd-6355-4003-8de3-fc2a3c76bead   https://
 We have two options here. If we're creating a control plane from scratch, we can use the Kong Operator to manage it. If so, run the following command:
 
 ```shell
-cat control-plane.yaml | envsubst | kubectl apply -f -
+envsubst < control-plane.yaml | kubectl apply -f -
 ```
 
 You should now see your newly created control plane in the [Konnect UI](https://cloud.konghq.com/us/gateway-manager/):
@@ -126,7 +126,7 @@ echo $CONTROL_PLANE_ID
 In your terminal, you should see a UUID string from the above command if successful. We are now ready to run the following: 
 
 ```shell
-cat control-plane-mirror.yaml | envsubst | kubectl apply -f -
+envsubst < control-plane-mirror.yaml | kubectl apply -f -
 ```
 
 
@@ -137,7 +137,7 @@ Please inspect your local copy of [data-plane.yaml](data-plane.yaml). There are 
 
 Finally, out DataPlane resource is ready to deploy with the following command:
 ```shell
-cat data-plane.yaml | envsubst | kubectl apply -f -
+envsubst < data-plane.yaml | kubectl apply -f -
 ```
 
 Your data plane pod should now be strting up. You can check on the status via k9s, or using kubectl directly. If you check your Konnect UI, you should be able to see it in the *Data Plane Nodes* section:
