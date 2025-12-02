@@ -80,7 +80,10 @@ spec:
               ####### Optional DEBUG Settings ########
               # - name: KONG_LOG_LEVEL
               #   value: debug
-
+              - name: KONG_NGINX_HTTP_CLIENT_BODY_BUFFER_SIZE
+                value: "5m" # Example: Set to 5MB. Can be usesful for AI workloads.
+              - name: KONG_NGINX_HTTP_CLIENT_MAX_BODY_SIZE
+                value: "5m" # Example: Set to 5MB. Can be usesful for AI workloads.
               ####### Optional Plugin Settings ########
               - name: KONG_PLUGINS
                 value: "bundled" # add custom plugins comma separated after "bundled," if any. Would require a custom image.
